@@ -2,6 +2,7 @@ import socket
 import rsa
 import math
 import random
+import sys
 
 if __name__ == '__main__':
     server = ('127.0.0.1', 51000)
@@ -16,17 +17,18 @@ if __name__ == '__main__':
 
     plaintext = random.randint(99, 1000)
     print('Generated random number: ' + str(plaintext))
-    ciphertext = (plaintext ** 17) % 3233
+    ciphertext = (plaintext ** pubkey.e) % pubkey.n
 
     '''
     Setup Completed
     '''
 
     LB = 0.0
-    UB = 3233
+    UB = pubkey.n
     C = str(ciphertext)
-    for i in range(int(math.ceil(math.log(3233, 2)))):
-        C = str(((2 ** 17) % 3233) * int(C))
+    for i in range(int(math.ceil(math.log(pubkey.n, 2)))):
+        C = str(((2 ** pubkey.e) % pubkey.n) * int(C))
+        s.sendto(str(sys.getsizeof(C)), server)
         s.sendto(C, server)
         ans = s.recv(32)
         if ans == '0':

@@ -19,9 +19,10 @@ if __name__ == '__main__':
     Setup Completed
     '''
 
-    for i in range(int(math.ceil(math.log(3233, 2)))):
-        ciphertext = s.recv(1024000)
-        plaintext = (int(ciphertext) ** 413) % 3233
+    for i in range(int(math.ceil(math.log(pubkey.n, 2)))):
+        size = s.recv(16)
+        ciphertext = s.recv(int(size))
+        plaintext = (int(ciphertext) ** privkey.d) % privkey.n
         ans = int(plaintext) % 2
         s.sendto(str(ans), client)
 

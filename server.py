@@ -10,7 +10,7 @@ if __name__ == '__main__':
     print('Server Started')
 
     print('Generating public and private key...')
-    pubkey, privkey = rsa.newkeys(16)
+    pubkey, privkey = rsa.newkeys(16)  # 16 because of computational limitations
 
     s.sendto(str(pubkey.e), client)
     s.sendto(str(pubkey.n), client)
@@ -19,11 +19,11 @@ if __name__ == '__main__':
     Setup Completed
     '''
 
-    for i in range(int(math.ceil(math.log(pubkey.n, 2)))):
-        size = s.recv(16)
+    for i in range(int(math.ceil(math.log(pubkey.n, 2)))):  # Finishes in log2(N) steps
+        size = s.recv(16)  # Speeds up computation time
         ciphertext = s.recv(int(size))
-        plaintext = (int(ciphertext) ** privkey.d) % privkey.n
-        ans = int(plaintext) % 2
+        plaintext = (int(ciphertext) ** privkey.d) % privkey.n  # Decryption
+        ans = int(plaintext) % 2  # Return last bit essentially
         s.sendto(str(ans), client)
 
     s.close()

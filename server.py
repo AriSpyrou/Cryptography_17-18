@@ -12,6 +12,9 @@ if __name__ == '__main__':
     print('Generating public and private key...')
     pubkey, privkey = rsa.newkeys(16)  # 16 because of computational limitations
 
+    # Allows for the server to execute first
+    s.recv(1)
+
     s.sendto(str(pubkey.e), client)
     s.sendto(str(pubkey.n), client)
 

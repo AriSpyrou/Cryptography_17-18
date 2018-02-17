@@ -10,6 +10,9 @@ if __name__ == '__main__':
     s.bind(('127.0.0.1', 51001))
     print('Client Started')
 
+    # Allows for the server to execute first
+    s.sendto('1', server)
+
     pubkey = rsa.PublicKey
     pubkey.e = int(s.recv(5))
     pubkey.n = long(s.recv(5))
